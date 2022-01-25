@@ -201,19 +201,23 @@ public abstract class AbstractTurbineModelManagerTest extends BaseUnit5Test
         assertEquals(1, userGroupRoleSet1.size());
         Set<TurbineUserGroupRole> userGroupRoleSet2 = ((TurbineGroup) group).getUserGroupRoleSet();
         assertEquals(1, userGroupRoleSet2.size());
+        
         // retrieve objects again, which have as lazily loaded no usergroupset yet
         group = groupManager.getGroupById(group.getId());
         user = userManager.getUser( username );
-        role = roleManager.getRoleById( role.getId() );
-        
+        Role role1 = roleManager.getRoleById( role.getId() );
+        assertEquals( role, role1 );
+
         UserSet<User> userSet = userManager.getAllUsers();
         User user2 = userManager.getUserById( user.getId() );
         assertEquals( user, user2 );
-        
+
         // retrieve usergroupset now
         userGroupRoleSet =  ((TurbineUser)user).getUserGroupRoleSet();
         assertEquals(2, userGroupRoleSet.size());
         userGroupRoleSet1 = ((TurbineRole) role).getUserGroupRoleSet();
+        assertEquals(1, userGroupRoleSet1.size());
+        userGroupRoleSet1 = ((TurbineRole) role1).getUserGroupRoleSet();
         assertEquals(1, userGroupRoleSet1.size());
         userGroupRoleSet2 = ((TurbineGroup) group).getUserGroupRoleSet();
         assertEquals(1, userGroupRoleSet2.size());

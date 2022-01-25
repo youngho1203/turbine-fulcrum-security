@@ -60,7 +60,7 @@ public abstract class AbstractManager extends AbstractLogEnabled implements Serv
      * @return the user manager
      * @throws DataBackendException if fail to connect to datasource
      */
-    protected UserManager getUserManager() throws DataBackendException
+    protected <U extends UserManager> U getUserManager() throws DataBackendException
     {
         if (userManager == null)
         {
@@ -74,7 +74,7 @@ public abstract class AbstractManager extends AbstractLogEnabled implements Serv
                 throw new DataBackendException(ce.getMessage(), ce);
             }
         }
-        return userManager;
+        return (U) userManager;
     }
 
     /**

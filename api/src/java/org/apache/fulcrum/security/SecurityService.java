@@ -43,7 +43,7 @@ public interface SecurityService
      *
      * @return An UserManager object
      */
-    UserManager getUserManager();
+    <U extends UserManager> U getUserManager();
 
     /**
      * Returns the configured GroupManager.

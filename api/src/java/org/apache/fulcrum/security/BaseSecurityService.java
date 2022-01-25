@@ -40,7 +40,7 @@ import org.apache.avalon.framework.thread.ThreadSafe;
  */
 public class BaseSecurityService extends AbstractLogEnabled implements SecurityService, Initializable, Serviceable, ThreadSafe
 {
-    private ServiceManager manager = null;
+    protected ServiceManager manager = null;
     // management of Groups/Role/Permissions
 
     // temporary storage of the classnames prior to initialization
@@ -65,7 +65,7 @@ public class BaseSecurityService extends AbstractLogEnabled implements SecurityS
      * 
      * @return An UserManager object
      */
-    public UserManager getUserManager()
+    public <U extends UserManager> U getUserManager()
     {
         if (userManager == null)
         {
@@ -78,7 +78,7 @@ public class BaseSecurityService extends AbstractLogEnabled implements SecurityS
                 throw new RuntimeException(ce.getMessage(), ce);
             }
         }
-        return userManager;
+        return (U) userManager;
     }
 
     /**
@@ -164,15 +164,6 @@ public class BaseSecurityService extends AbstractLogEnabled implements SecurityS
         }
         return modelManager;
     }
-
-    /**
-     * Configure a new role Manager.
-     * 
-     * @param permissionManager
-     *            An PermissionManager object
-     */
-    // void setPermissionManager(PermissionManager permissionManager);
-
     /**
      * Avalon Service lifecycle method
      */

@@ -49,6 +49,7 @@ import org.apache.fulcrum.security.util.UnknownEntityException;
  */
 public interface TurbineUserManager extends UserManager
 {
+    String ROLE = TurbineUserManager.class.getName();
     /**
      * Constructs an User object to represent an anonymous user of the
      * application.

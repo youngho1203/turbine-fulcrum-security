@@ -21,7 +21,6 @@ import java.sql.Connection;
 
 import org.apache.fulcrum.security.entity.Permission;
 import org.apache.fulcrum.security.entity.Role;
-import org.apache.fulcrum.security.model.turbine.entity.TurbinePermission;
 import org.apache.torque.TorqueException;
 
 /**
@@ -80,7 +79,7 @@ public interface TurbineRolePermissionPeerMapper
      * @return the associated TurbinePermission object
      * @throws TorqueException If a problem occurs with the get[$filedType] method.
      */
-    public TurbinePermission getTurbinePermission(Connection connection)
+    Permission getTurbinePermission(Connection connection)
         throws TorqueException;
 
 }
