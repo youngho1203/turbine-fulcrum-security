@@ -18,7 +18,10 @@ package org.apache.fulcrum.security.authenticator;
  * specific language governing permissions and limitations
  * under the License.
  */
+import java.security.GeneralSecurityException;
 import java.security.NoSuchAlgorithmException;
+
+import java.util.Objects;
 
 import org.apache.avalon.framework.activity.Disposable;
 import org.apache.avalon.framework.configuration.Configurable;
@@ -31,7 +34,6 @@ import org.apache.avalon.framework.service.Serviceable;
 import org.apache.fulcrum.crypto.CryptoAlgorithm;
 import org.apache.fulcrum.crypto.CryptoService;
 import org.apache.fulcrum.security.entity.User;
-import org.apache.fulcrum.security.util.DataBackendException;
 
 /**
  * This class authenticates using the Fulcrum Crypto service a user and their
@@ -60,26 +62,26 @@ public class CryptoAuthenticator extends AbstractLogEnabled implements Authentic
      *            a User object.
      * @param password
      *            the user supplied password.
-     * @exception DataBackendException
+     * @exception GeneralSecurityException
      *                if there is a problem accessing the storage.
      */
     @Override
-    public boolean authenticate(User user, String password) throws DataBackendException
+    public boolean authenticate(User user, String password) throws GeneralSecurityException
     {
         try
         {
             CryptoAlgorithm ca = cryptoService.getCryptoAlgorithm(algorithm);
             ca.setCipher(cipher);
             String output = ca.encrypt(password);
-            return output.equals(user.getPassword());
+            return Objects.equals(output, user.getPassword());
         }
         catch (NoSuchAlgorithmException e)
         {
-            throw new DataBackendException(e.getMessage(), e);
+            throw e;
         }
         catch (Exception ex)
         {
-            throw new DataBackendException(ex.getMessage(), ex);
+            throw new GeneralSecurityException(ex.getMessage(), ex);
         }
     }
 

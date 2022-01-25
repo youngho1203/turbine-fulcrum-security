@@ -18,9 +18,10 @@ package org.apache.fulcrum.security.authenticator;
  * specific language governing permissions and limitations
  * under the License.
  */
+import java.security.GeneralSecurityException;
+
 import org.apache.avalon.framework.logger.AbstractLogEnabled;
 import org.apache.fulcrum.security.entity.User;
-import org.apache.fulcrum.security.util.DataBackendException;
 
 /**
  * This class authenticates by returning TRUE always. Regardless of the user and
@@ -40,7 +41,7 @@ public class NoOpAuthenticator extends AbstractLogEnabled implements Authenticat
 	 * @see org.apache.fulcrum.security.authenticator.Authenticator#authenticate(org.apache.fulcrum.security.entity.User, java.lang.String)
 	 */
 	@Override
-	public boolean authenticate(User user, String password) throws DataBackendException {
+	public boolean authenticate(User user, String password) throws GeneralSecurityException {
 		return true;
 	}
 }

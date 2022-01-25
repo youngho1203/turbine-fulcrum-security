@@ -18,6 +18,8 @@ package org.apache.fulcrum.security.authenticator;
  * specific language governing permissions and limitations
  * under the License.
  */
+import java.security.GeneralSecurityException;
+
 import org.apache.avalon.framework.logger.AbstractLogEnabled;
 import org.apache.fulcrum.security.entity.User;
 import org.apache.fulcrum.security.util.DataBackendException;
@@ -43,7 +45,7 @@ public class TextMatchAuthenticator extends AbstractLogEnabled implements Authen
 	 * @exception DataBackendException if there is a problem accessing the storage.
 	 */
 	@Override
-	public boolean authenticate(User user, String password) throws DataBackendException {
+	public boolean authenticate(User user, String password) throws GeneralSecurityException {
 		if (user == null) {
 			return false;
 		}

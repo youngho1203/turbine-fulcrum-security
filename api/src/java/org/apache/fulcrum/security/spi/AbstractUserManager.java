@@ -18,6 +18,8 @@ package org.apache.fulcrum.security.spi;
  * specific language governing permissions and limitations
  * under the License.
  */
+import java.security.GeneralSecurityException;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.fulcrum.security.UserManager;
 import org.apache.fulcrum.security.acl.AccessControlList;
@@ -99,7 +101,7 @@ public abstract class AbstractUserManager extends AbstractEntityManager implemen
      *                if there is a problem accessing the storage.
      */
     @Override
-	public <T extends User> T getUser(String userName, String password) throws PasswordMismatchException, UnknownEntityException, DataBackendException
+	public <T extends User> T getUser(String userName, String password) throws PasswordMismatchException, UnknownEntityException, DataBackendException, GeneralSecurityException
     {
         T user = getUser(userName);
         authenticate(user, password);
@@ -156,11 +158,11 @@ public abstract class AbstractUserManager extends AbstractEntityManager implemen
      *                if the supplied password was incorrect.
      * @exception UnknownEntityException
      *                if the user's account does not exist in the database.
-     * @exception DataBackendException
+     * @exception GeneralSecurityException
      *                if there is a problem accessing the storage.
      */
     @Override
-	public void authenticate(User user, String password) throws PasswordMismatchException, UnknownEntityException, DataBackendException
+	public void authenticate(User user, String password) throws PasswordMismatchException, UnknownEntityException, GeneralSecurityException
     {
         if (authenticator == null)
         {

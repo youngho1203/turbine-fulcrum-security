@@ -19,8 +19,10 @@ package org.apache.fulcrum.security.authenticator;
  * under the License.
  */
 
+import java.security.GeneralSecurityException;
+
 import org.apache.fulcrum.security.entity.User;
-import org.apache.fulcrum.security.util.DataBackendException;
+
 
 /**
  * Interface for an Authenticator. Authenticator's are pluggable objects that
@@ -34,5 +36,5 @@ public interface Authenticator
 
     public static final String ROLE = Authenticator.class.getName();
 
-    public boolean authenticate(User user, String password) throws DataBackendException;
+    public boolean authenticate(User user, String password) throws GeneralSecurityException;
 }

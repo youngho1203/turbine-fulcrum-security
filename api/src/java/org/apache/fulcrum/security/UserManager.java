@@ -20,6 +20,8 @@ package org.apache.fulcrum.security;
  */
 import java.io.Serializable;
 
+import java.security.GeneralSecurityException;
+
 import org.apache.fulcrum.security.acl.AccessControlList;
 import org.apache.fulcrum.security.entity.User;
 import org.apache.fulcrum.security.util.DataBackendException;
@@ -146,7 +148,7 @@ public interface UserManager extends Serializable
      * @throws DataBackendException
      *                if there is a problem accessing the storage.
      */
-    <T extends User> T getUser(String username, String password) throws PasswordMismatchException, UnknownEntityException, DataBackendException;
+    <T extends User> T getUser(String username, String password) throws PasswordMismatchException, UnknownEntityException, DataBackendException, GeneralSecurityException;
 
     /**
      * Retrieves all users defined in the system.
@@ -184,10 +186,10 @@ public interface UserManager extends Serializable
      *                if the supplied password was incorrect.
      * @throws UnknownEntityException
      *                if the user's record does not exist in the database.
-     * @throws DataBackendException
+     * @throws GeneralSecurityException
      *                if there is a problem accessing the storage.
      */
-    void authenticate(User user, String password) throws PasswordMismatchException, UnknownEntityException, DataBackendException;
+    void authenticate(User user, String password) throws PasswordMismatchException, UnknownEntityException, GeneralSecurityException;
 
     /**
      * Creates new user account with specified attributes.
