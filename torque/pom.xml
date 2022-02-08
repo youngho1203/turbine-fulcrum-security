@@ -33,12 +33,12 @@
   </scm>
 
     <properties>
-        <project.build.sourceEncoding>ISO-8859-1</project.build.sourceEncoding>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
 
         <!-- Easy update of torque libs -->
-        <torque.version>5.0</torque.version>
+        <torque.version>5.1</torque.version>
         <torque.om>org.apache.fulcrum.security.torque.om</torque.om>
         <torque.om.path>org/apache/fulcrum/security/torque/om</torque.om.path>
     </properties>
