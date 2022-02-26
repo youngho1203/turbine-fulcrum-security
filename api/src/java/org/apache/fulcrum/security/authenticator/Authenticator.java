@@ -29,6 +29,7 @@ import org.apache.fulcrum.security.entity.User;
  * allow different SPI's to have different authentication.
  * 
  * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
+ * @author <a href="mailto:youngho@apache.org">Youngho Cho</a>
  * @version $Id$
  */
 public interface Authenticator
@@ -37,4 +38,6 @@ public interface Authenticator
     public static final String ROLE = Authenticator.class.getName();
 
     public boolean authenticate(User user, String password) throws GeneralSecurityException;
+
+    public void setPassword(User user, String newpassword) throws GeneralSecurityException;
 }

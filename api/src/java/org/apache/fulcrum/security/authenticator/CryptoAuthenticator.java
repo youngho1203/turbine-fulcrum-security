@@ -43,6 +43,7 @@ import org.apache.fulcrum.security.entity.User;
  * avalon.service  type="org.apache.fulcrum.security.authenticator.Authenticator"
  *
  * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
+ * @author <a href="mailto:youngho@apache.org">Youngho Cho</a>
  * @version $Id$
  *                
  */
@@ -56,14 +57,14 @@ public class CryptoAuthenticator extends AbstractLogEnabled implements Authentic
     /**
      * Authenticate a user with the specified password. If authentication is
      * successful the method returns true. If it fails, it returns false If
-     * there are any problems, an exception is thrown.
+     * there are any problems, an GeneralSecurityException is thrown.
      *
      * @param user
      *            a User object.
      * @param password
      *            the user supplied password.
      * @exception GeneralSecurityException
-     *                if there is a problem accessing the storage.
+     *                if there is a problem when encrpt.
      */
     @Override
     public boolean authenticate(User user, String password) throws GeneralSecurityException
@@ -74,6 +75,37 @@ public class CryptoAuthenticator extends AbstractLogEnabled implements Authentic
             ca.setCipher(cipher);
             String output = ca.encrypt(password);
             return Objects.equals(output, user.getPassword());
+        }
+        catch (NoSuchAlgorithmException e)
+        {
+            throw e;
+        }
+        catch (Exception ex)
+        {
+            throw new GeneralSecurityException(ex.getMessage(), ex);
+        }
+    }
+
+    /**
+     * set a user with the encrpyt newpassword.
+     * there are any problems, an GeneralSecurityException is thrown.
+     *
+     * @param user
+     *            a User object.
+     * @param newpassword
+     *            the user supplied newpassword.
+     * @exception GeneralSecurityException
+     *                if there is a problem when encrpt.
+     */
+    @Override
+    public void setPassword(User user, String newpassword) throws GeneralSecurityException
+    {
+        try
+        {
+            CryptoAlgorithm ca = cryptoService.getCryptoAlgorithm(algorithm);
+            ca.setCipher(cipher);
+            String output = ca.encrypt(newpassword);
+            user.setPassword(output);
         }
         catch (NoSuchAlgorithmException e)
         {

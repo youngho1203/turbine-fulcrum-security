@@ -32,6 +32,7 @@ import org.apache.fulcrum.security.util.DataBackendException;
  * type="org.apache.fulcrum.security.authenticator.Authenticator"
  *
  * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
+ * @author <a href="mailto:youngho@apache.org">Youngho Cho</a>
  * @version $Id$
  * 
  */
@@ -54,4 +55,21 @@ public class TextMatchAuthenticator extends AbstractLogEnabled implements Authen
 		String tested = password == null ? "" : password.trim();
 		return referenced.equals(tested);
 	}
+
+    /**
+     * set a user with the encrpyt newpassword.
+     * there are any problems, an GeneralSecurityException is thrown.
+     *
+     * @param user
+     *            a User object.
+     * @param newpassword
+     *            the user supplied newpassword.
+     * @exception GeneralSecurityException
+     *                if there is a problem when encrpt.
+     */
+    @Override
+    public void setPassword(User user, String newpassword) throws GeneralSecurityException
+    {
+        user.setPassword(newpassword);
+    }
 }

@@ -36,7 +36,6 @@ import org.apache.fulcrum.security.util.UserSet;
  */
 public class MemoryUserManagerImpl extends AbstractUserManager {
 
-	// TODO Need to load up Crypto component and actually encrypt passwords!
 
 	private static List<User> users = new ArrayList<User>();
 	

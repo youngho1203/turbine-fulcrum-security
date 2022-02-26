@@ -36,10 +36,9 @@ import org.apache.fulcrum.security.util.UnknownEntityException;
  * with testing and prototyping of ideas.
  * 
  * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
+ * @author <a href="mailto:youngho@apache.org">Youngho Cho</a>
  * @version $Id$
  */
-
-// TODO Need to load up Crypto component and actually encrypt passwords!
 
 public abstract class AbstractUserManager extends AbstractEntityManager implements UserManager
 {
@@ -167,7 +166,6 @@ public abstract class AbstractUserManager extends AbstractEntityManager implemen
         if (authenticator == null)
         {
             authenticator = (Authenticator) resolve(Authenticator.ROLE);
-
         }
         if (!authenticator.authenticate(user, password))
         {
@@ -191,20 +189,25 @@ public abstract class AbstractUserManager extends AbstractEntityManager implemen
      *                if the user's account does not exist in the database.
      * @exception DataBackendException
      *                if there is a problem accessing the storage.
+     * @throws GeneralSecurityException if there was an error when password hashing.
      */
     @Override
 	public void changePassword(User user, String oldPassword, String newPassword) throws PasswordMismatchException, UnknownEntityException,
-            DataBackendException
+            DataBackendException, GeneralSecurityException
     {
         if (!checkExists(user))
         {
             throw new UnknownEntityException("The account '" + user.getName() + "' does not exist");
         }
-        if (!oldPassword.equals(user.getPassword()))
+        if (authenticator == null)
+        {
+            authenticator = (Authenticator) resolve(Authenticator.ROLE);
+        }
+        if (!authenticator.authenticate(user, oldPassword))
         {
             throw new PasswordMismatchException("The supplied old password for '" + user.getName() + "' was incorrect");
         }
-        user.setPassword(newPassword);
+        authenticator.setPassword(user, newPassword);
         // save the changes in the database immediately, to prevent the password
         // being 'reverted' to the old value if the user data is lost somehow
         // before it is saved at session's expiry.
@@ -227,15 +230,20 @@ public abstract class AbstractUserManager extends AbstractEntityManager implemen
      *                if the user's record does not exist in the database.
      * @exception DataBackendException
      *                if there is a problem accessing the storage.
+     * @throws GeneralSecurityException if there was an error when password hashing.
      */
     @Override
-	public void forcePassword(User user, String password) throws UnknownEntityException, DataBackendException
+	public void forcePassword(User user, String password) throws UnknownEntityException, DataBackendException, GeneralSecurityException
     {
         if (!checkExists(user))
         {
             throw new UnknownEntityException("The account '" + user.getName() + "' does not exist");
         }
-        user.setPassword(password);
+        if (authenticator == null)
+        {
+            authenticator = (Authenticator) resolve(Authenticator.ROLE);
+        }
+        authenticator.setPassword(user, password);
         // save the changes in the database immediately, to prevent the
         // password being 'reverted' to the old value if the user data
         // is lost somehow before it is saved at session's expiry.
@@ -301,9 +309,10 @@ public abstract class AbstractUserManager extends AbstractEntityManager implemen
      *             if there was an error accessing the data backend.
      * @throws EntityExistsException
      *             if the user account already exists.
+     * @throws GeneralSecurityException if there was an error when password hashing.
      */
     @Override
-	public <T extends User> T addUser(T user, String password) throws DataBackendException, EntityExistsException
+	public <T extends User> T addUser(T user, String password) throws DataBackendException, EntityExistsException, GeneralSecurityException
     {
         if (StringUtils.isEmpty(user.getName()))
         {
@@ -313,7 +322,11 @@ public abstract class AbstractUserManager extends AbstractEntityManager implemen
         {
             throw new EntityExistsException("The account '" + user.getName() + "' already exists");
         }
-        user.setPassword(password);
+        if (authenticator == null)
+        {
+            authenticator = (Authenticator) resolve(Authenticator.ROLE);
+        }
+        authenticator.setPassword(user, password);
         try
         {
             return persistNewUser(user);

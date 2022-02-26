@@ -187,7 +187,7 @@ public interface UserManager extends Serializable
      * @throws UnknownEntityException
      *                if the user's record does not exist in the database.
      * @throws GeneralSecurityException
-     *                if there is a problem accessing the storage.
+     *                if there was an error when password hashing.
      */
     void authenticate(User user, String password) throws PasswordMismatchException, UnknownEntityException, GeneralSecurityException;
 
@@ -205,8 +205,9 @@ public interface UserManager extends Serializable
      *             if there was an error accessing the data backend.
      * @throws EntityExistsException
      *             if the user account already exists.
+     * @throws GeneralSecurityException if there was an error when password hashing
      */
-    <T extends User> T addUser(T user, String password) throws EntityExistsException, DataBackendException;
+    <T extends User> T addUser(T user, String password) throws EntityExistsException, DataBackendException, GeneralSecurityException;
 
     /**
      * Removes an user account from the system.
@@ -235,9 +236,10 @@ public interface UserManager extends Serializable
      *                if the user's record does not exist in the database.
      * @throws DataBackendException
      *                if there is a problem accessing the storage.
+     * @throws GeneralSecurityException if there was an error when password hashing.
      */
     void changePassword(User user, String oldPassword, String newPassword) throws PasswordMismatchException, UnknownEntityException,
-            DataBackendException;
+            DataBackendException, GeneralSecurityException;
 
     /**
      * Forcibly sets new password for an User.
@@ -255,8 +257,9 @@ public interface UserManager extends Serializable
      *                if the user's record does not exist in the database.
      * @throws DataBackendException
      *                if there is a problem accessing the storage.
+     * @throws GeneralSecurityException if there was an error when password hashing.
      */
-    void forcePassword(User user, String password) throws UnknownEntityException, DataBackendException;
+    void forcePassword(User user, String password) throws UnknownEntityException, DataBackendException, GeneralSecurityException;
 
     /**
      * Return a Class object representing the system's chosen implementation of

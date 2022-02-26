@@ -32,6 +32,7 @@ import org.apache.fulcrum.security.entity.User;
  * type="org.apache.fulcrum.security.authenticator.Authenticator"
  *
  * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
+ * @author <a href="mailto:youngho@apache.org">Youngho Cho</a>
  * @version $Id$
  * 
  */
@@ -44,4 +45,10 @@ public class NoOpAuthenticator extends AbstractLogEnabled implements Authenticat
 	public boolean authenticate(User user, String password) throws GeneralSecurityException {
 		return true;
 	}
+
+    @Override
+    public void setPassword(User user, String newpassword) throws GeneralSecurityException
+    {
+        // nothing to do
+    }
 }
